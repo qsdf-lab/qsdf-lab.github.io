@@ -8,12 +8,10 @@
   <style>
     :root{
       --bg:#07080c;
-      --panel:rgba(255,255,255,.04);
       --text:#f2f5ff;
-      --muted:rgba(242,245,255,.70);
+      --muted:rgba(242,245,255,.72);
       --line:rgba(242,245,255,.12);
-      --accent:#ff2ea6;   /* optional: AmorphiQ-ish */
-      --accent2:#6be4ff;  /* optional */
+      --accent:#ff2ea6;
       --max: 980px;
       --r: 16px;
     }
@@ -23,8 +21,8 @@
       margin:0;
       font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
       background:
-        radial-gradient(900px 520px at 15% -10%, rgba(255,46,166,.16), transparent 60%),
-        radial-gradient(760px 480px at 92% 0%, rgba(107,228,255,.12), transparent 55%),
+        radial-gradient(900px 520px at 15% -10%, rgba(255,46,166,.14), transparent 60%),
+        radial-gradient(760px 480px at 92% 0%, rgba(107,228,255,.10), transparent 55%),
         radial-gradient(760px 520px at 55% 120%, rgba(255,255,255,.06), transparent 60%),
         var(--bg);
       color:var(--text);
@@ -60,6 +58,7 @@
       padding:8px 10px;
       border-radius: 999px;
       border:1px solid transparent;
+      transition: background .2s ease, border-color .2s ease, color .2s ease;
     }
     nav a:hover{
       color:var(--text);
@@ -67,17 +66,56 @@
       background: rgba(255,255,255,.03);
     }
 
+    /* --- FabCue-ish reveal animation --- */
+    .reveal{
+      opacity:0;
+      transform: translateY(14px);
+      transition: opacity .85s ease, transform .85s ease;
+      will-change: opacity, transform;
+    }
+    .reveal.visible{
+      opacity:1;
+      transform: translateY(0);
+    }
+    /* if user prefers reduced motion, turn animations off */
+    @media (prefers-reduced-motion: reduce){
+      .reveal{opacity:1; transform:none; transition:none}
+      .btn{transition:none}
+    }
+
+    .heroimg{
+      width:100%;
+      max-height: 420px;
+      object-fit: cover;
+      border-radius: 18px;
+      margin: 28px 0 10px;
+      opacity: .01;                 /* start nearly invisible */
+      transform: scale(1.01);       /* tiny settle-in */
+      filter: contrast(1.10) brightness(.85) saturate(.90);
+      border:1px solid rgba(255,255,255,.10);
+      transition: opacity 1.1s ease, transform 1.1s ease;
+    }
+    .heroimg.loaded{
+      opacity:.95;
+      transform: scale(1);
+    }
+    .caption{
+      color: rgba(242,245,255,.55);
+      font-size: 13px;
+      margin: 4px 0 24px;
+    }
+
     h1{
       font-size: clamp(40px, 6vw, 74px);
       letter-spacing: -1.4px;
       line-height: 1.02;
-      margin: 46px 0 10px;
+      margin: 0 0 10px;
     }
     .sub{
       font-size: 18px;
       color: var(--muted);
       max-width: 72ch;
-      margin: 0 0 26px;
+      margin: 0 0 22px;
     }
 
     .links{display:flex; gap:10px; flex-wrap:wrap; margin-top: 10px}
@@ -89,8 +127,10 @@
       font-weight:740;
       font-size:13px;
       background: rgba(255,255,255,.02);
+      transition: transform .18s ease, background .2s ease, border-color .2s ease;
     }
     .btn:hover{
+      transform: translateY(-2px);
       border-color: rgba(255,255,255,.22);
       background: rgba(255,255,255,.05);
     }
@@ -158,25 +198,30 @@
       <nav>
         <a href="#capability">Capability</a>
         <a href="#projects">Projects</a>
+        <a href="#linkedin">LinkedIn</a>
         <a href="#contact">Contact</a>
       </nav>
     </header>
 
     <main>
-      <h1>Quantum Science &amp;<br/>Device Facility.</h1>
-      <p class="sub">
+      <!-- HERO IMAGE -->
+      <img class="heroimg" src="images/hero.jpg" alt="Packaged device under test with RF launchers and wire bonding" />
+      <div class="caption reveal">Representative packaged device under test.</div>
+
+      <h1 class="reveal">Quantum Science &amp;<br/>Device Facility.</h1>
+      <p class="sub reveal">
         Cryogenic measurement and device physics for next-generation quantum systems —
         a front door to facility capability and selected programmes.
       </p>
 
-      <div class="links">
+      <div class="links reveal">
         <a class="btn primary" href="#capability">See capability</a>
         <a class="btn" href="#projects">View projects</a>
-        <a class="btn" href="mailto:qsdflab@gmail.com?subject=QSDF%20enquiry">Email</a>
+        <a class="btn" href="mailto:info@example.com?subject=QSDF%20enquiry">Email</a>
       </div>
 
       <section id="capability" class="grid">
-        <div class="card">
+        <div class="card reveal">
           <div class="k">Capability</div>
           <div class="t">mK measurement, fast iteration</div>
           <p class="p">
@@ -195,7 +240,7 @@
           </div>
         </div>
 
-        <div id="projects" class="card">
+        <div id="projects" class="card reveal">
           <div class="k">Projects</div>
           <div class="t">AmorphiQ • EnspeQ • Silicon</div>
           <p class="p">
@@ -209,7 +254,23 @@
           </div>
         </div>
 
-        <div id="contact" class="card">
+        <!-- LinkedIn section placeholder -->
+        <div id="linkedin" class="card reveal">
+          <div class="k">LinkedIn</div>
+          <div class="t">Updates</div>
+          <p class="p">
+            Best practice on a static site: link to your LinkedIn page, and optionally embed a single pinned post.
+          </p>
+          <div class="links">
+            <a class="btn primary" href="https://www.linkedin.com/" target="_blank" rel="noreferrer">Follow on LinkedIn</a>
+            <a class="btn" href="#linkedin-embed">Pinned post</a>
+          </div>
+
+          <!-- Optional embed area (see section 2 below) -->
+          <div id="linkedin-embed" style="margin-top:14px"></div>
+        </div>
+
+        <div id="contact" class="card reveal">
           <div class="k">Contact</div>
           <div class="t">Collaborations &amp; access</div>
           <p class="p">
@@ -217,13 +278,13 @@
             device type, temperature range, and timescale.
           </p>
           <div class="links">
-            <a class="btn primary" href="mailto:qsdflab@gmail.com?subject=QSDF%20collaboration">qsdflab@gmail.com</a>
+            <a class="btn primary" href="mailto:info@example.com?subject=QSDF%20collaboration">info@example.com</a>
             <a class="btn" href="#top" onclick="window.scrollTo({top:0,behavior:'smooth'}); return false;">Back to top</a>
           </div>
         </div>
       </section>
 
-      <footer>
+      <footer class="reveal">
         <div>© <span id="y"></span> QSDF</div>
         <div>Built on GitHub Pages</div>
       </footer>
@@ -231,7 +292,30 @@
   </div>
 
   <script>
+    // year
     document.getElementById('y').textContent = new Date().getFullYear();
+
+    // hero image "settle in" when loaded
+    const hero = document.querySelector('.heroimg');
+    if (hero) {
+      if (hero.complete) hero.classList.add('loaded');
+      else hero.addEventListener('load', () => hero.classList.add('loaded'));
+    }
+
+    // reveal-on-scroll
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.14 }
+    );
+
+    document.querySelectorAll('.reveal').forEach((el) => observer.observe(el));
   </script>
 </body>
 </html>
